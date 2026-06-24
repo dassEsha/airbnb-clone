@@ -104,3 +104,12 @@ A RESTful API for managing hotels, rooms, bookings, inventory, and user authenti
 
 - PATCH /api/v1/bookings/resetBookings
   - Cron Job: Every 1 minute
+ 
+---
+## Author
+
+**Isha Das**
+
+MCA Student, MANIT Bhopal
+
+Backend Development | Java | Spring Boot | Database Systems
