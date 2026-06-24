@@ -21,327 +21,86 @@ A RESTful API for managing hotels, rooms, bookings, inventory, and user authenti
 
 ---
 
-# Base URL
+## APIs Endpoints
+### Hotel Manager
 
-```http
-/api/v1
-```
+### Hotels
 
----
+- POST /api/v1/admin/hotels
+- GET /api/v1/admin/hotels
 
-# Authentication APIs
+- GET /api/v1/admin/hotels/{hotelId}
+- PATCH /api/v1/admin/hotels/{hotelId}
+- DELETE /api/v1/admin/hotels/{hotelId}
 
-## Login
+### Rooms
 
-```http
-POST /auth/login
-```
+- POST /api/v1/admin/hotels/{hotelId}/rooms
+- GET /api/v1/admin/hotels/{hotelId}/rooms/{roomId}
+- PATCH /api/v1/admin/hotels/{hotelId}/rooms/{roomId}
+- DELETE /api/v1/admin/hotels/{hotelId}/rooms/{roomId}
 
-### Request Body
+### Bookings
 
-```json
-{
-  "email": "user@example.com",
-  "password": "password"
-}
-```
+- GET /api/v1/admin/bookings
+  - Query Params: hotelId, startDate, endDate, status
 
----
+- POST /api/v1/admin/reports
+  - Query Params: startDate, endDate
 
-## Signup
+### Inventory
 
-```http
-POST /auth/signup
-```
-
-### Request Body
-
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password"
-}
-```
+- PATCH /api/v1/admins/inventory/{hotelId}/{roomId}/{date}
 
 ---
 
-## Verify User
+## Guest
 
-```http
-POST /auth/verify
-```
+### Hotel Search
 
----
+- GET /api/v1/hotels/search
+  - Query Params: city, checkinDate, checkoutDate, numberOfRooms
+  - Response: Paginated
 
-# Hotel Manager APIs
+- GET /api/v1/hotels/{hotelId}
+  - Query Params: checkinDate, checkoutDate, numberOfRooms
 
-## Create Hotel
+- GET /api/v1/hotels/{hotelId}/rooms/{roomId}
 
-```http
-POST /admin/hotels
-```
+### Booking
 
----
+- POST /api/v1/bookings
 
-## Get All Hotels
+- POST /api/v1/guests
 
-```http
-GET /admin/hotels
-```
+- PATCH /api/v1/bookings
+  - Request Body: array of guestId, paymentMethod
 
----
+- POST /api/v1/payments/{bookingId}
 
-## Get Hotel By ID
+### Booking Management
 
-```http
-GET /admin/hotels/{hotelId}
-```
+- GET /api/v1/bookings
 
----
+- GET /api/v1/bookings/{bookingId}
 
-## Update Hotel
-
-```http
-PATCH /admin/hotels/{hotelId}
-```
+- PATCH /api/v1/bookings/cancel
 
 ---
 
-## Delete Hotel
+## User
 
-```http
-DELETE /admin/hotels/{hotelId}
-```
+### Authentication
 
----
+- POST /api/v1/auth/login
 
-# Room Management
+- POST /api/v1/auth/signup
 
-## Create Room
-
-```http
-POST /admin/hotels/{hotelId}/rooms
-```
+- POST /api/v1/auth/verify
 
 ---
 
-## Get Room
+## System
 
-```http
-GET /admin/hotels/{hotelId}/rooms/{roomId}
-```
-
----
-
-## Update Room
-
-```http
-PATCH /admin/hotels/{hotelId}/rooms/{roomId}
-```
-
----
-
-## Delete Room
-
-```http
-DELETE /admin/hotels/{hotelId}/rooms/{roomId}
-```
-
----
-
-# Booking Management (Admin)
-
-## Get Bookings
-
-```http
-GET /admin/bookings
-```
-
-### Query Parameters
-
-| Parameter | Type | Description |
-|------------|------|-------------|
-| hotelId | String | Hotel ID |
-| startDate | Date | Booking start date |
-| endDate | Date | Booking end date |
-| status | String | Booking status |
-
-Example:
-
-```http
-GET /admin/bookings?hotelId=123&status=CONFIRMED
-```
-
----
-
-## Get Reports
-
-```http
-POST /admin/reports
-```
-
-### Query Parameters
-
-| Parameter | Type |
-|------------|------|
-| startDate | Date |
-| endDate | Date |
-
----
-
-# Inventory Management
-
-## Update Inventory
-
-```http
-PATCH /admin/inventory/{hotelId}/{roomId}/{date}
-```
-
----
-
-# Guest APIs
-
-## Search Hotels
-
-```http
-GET /hotels/search
-```
-
-### Query Parameters
-
-| Parameter | Description |
-|------------|-------------|
-| city | City name |
-| checkinDate | Check-in date |
-| checkoutDate | Check-out date |
-| numberOfRooms | Number of rooms |
-
-### Response
-
-Paginated list of available hotels.
-
----
-
-## Get Hotel Details
-
-```http
-GET /hotels/{hotelId}
-```
-
-### Query Parameters
-
-| Parameter | Description |
-|------------|-------------|
-| checkinDate | Check-in date |
-| checkoutDate | Check-out date |
-| numberOfRooms | Number of rooms |
-
----
-
-## Get Room Details
-
-```http
-GET /hotels/{hotelId}/rooms/{roomId}
-```
-
----
-
-# Guest Management
-
-## Create Guest
-
-```http
-POST /guests
-```
-
----
-
-# Booking APIs
-
-## Create Booking
-
-```http
-POST /bookings
-```
-
----
-
-## Update Booking
-
-```http
-PATCH /bookings
-```
-
-### Request Body
-
-```json
-{
-  "guestIds": ["guestId1", "guestId2"],
-  "paymentMethod": "UPI"
-}
-```
-
----
-
-## Get All Bookings
-
-```http
-GET /bookings
-```
-
----
-
-## Get Booking By ID
-
-```http
-GET /bookings/{bookingId}
-```
-
----
-
-## Cancel Booking
-
-```http
-PATCH /bookings/cancel
-```
-
----
-
-# Payment APIs
-
-## Process Payment
-
-```http
-POST /payments/{bookingId}
-```
-
----
-
-# System APIs
-
-## Reset Expired Bookings
-
-```http
-PATCH /bookings/resetBookings
-```
-
-### Description
-
-Automatically executed through a Cron Job every 1 minute to reset expired or incomplete bookings.
-
----
-
-# HTTP Status Codes
-
-| Code | Description |
-|--------|-------------|
-| 200 | Success |
-| 201 | Resource Created |
-| 400 | Bad Request |
-| 401 | Unauthorized |
-| 403 | Forbidden |
-| 404 | Not Found |
-| 500 | Internal Server Error |
-
----
+- PATCH /api/v1/bookings/resetBookings
+  - Cron Job: Every 1 minute
