@@ -2,8 +2,7 @@ package com.eshaa.airBnbApp.Entity;
 
 import com.eshaa.airBnbApp.Entity.Enums.BookingStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,6 +13,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Booking {
 
     @Id
@@ -64,4 +66,7 @@ public class Booking {
     private Set<Guest> guests;
 
 
+    public LocalDateTime getCreatedAt() {
+        return null;
+    }
 }
